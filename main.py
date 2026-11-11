@@ -124,8 +124,9 @@ def decide(game, decision, options, max_chars, view):
     if decision == "speak":
         # seer with a known wolf: push to exile them
         if role == "seer":
+            alive_seats = {p["seat"] for p in alive_players(view)}
             for r in (view.get("seerResults") or []):
-                if r.get("werewolf"):
+                if r.get("werewolf") and r.get("seat") in alive_seats:
                     return {"text": f"I checked seat {r['seat']} last night. They are a werewolf. We should vote them out today."[:max_chars]}
         # werewolf: accuse the most suspicious villager, deflect from partner
         if role == "werewolf":
